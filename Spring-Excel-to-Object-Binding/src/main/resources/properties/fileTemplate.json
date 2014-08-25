@@ -1,0 +1,31 @@
+{
+  "templateId" :  1,
+  "templateName" :  "USER",
+  "dbSchemaName" :  "",
+  "dbTableName" :  "",
+  "columnTemplates" :  [
+                        {
+                            "id": 1,
+                            "pos": 0,
+                            "templateName": "ID",
+                            "dbColumnName": "ID",
+                            "beanColumnName": "id",
+                            "type": "DECIMAL"
+                          },
+                          {
+                            "id": 2,
+                            "pos": 1,
+                            "templateName": "Name",
+                            "dbColumnName": "NAME",
+                            "beanColumnName": "name",
+                            "type": "VARCHAR"
+                          },
+                          {
+                            "id": 3,
+                            "pos": 2,
+                            "templateName": "DOB",
+                            "dbColumnName": "DOB",
+                            "beanColumnName": "dob",
+                            "type": "TIMESTAMP"
+                          }
+                        ] }
