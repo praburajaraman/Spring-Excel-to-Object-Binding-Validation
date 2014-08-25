@@ -242,10 +242,13 @@ hope this helps. download the code and try it yourself. post your feedback
 
 planning to do validation in POJO, this is when we have to use validator to validate form inputs(if you already have one, just to make use of it). and respond back to use what errors they had in excel.
 
+This is my File :
+
+ID	Name	DOB
+1	Prabu	8/25/2014
+2	Ilan	8/25/2014
+
+And binded Object List:
+[User [id=1, name=Prabu, dob=Mon Aug 25 00:00:00 EDT 2014], User [id=2, name=Ilan, dob=Mon Aug 25 00:00:00 EDT 2014]]
+
 Want to contibute. write to me.
-
-
-
-
-
-
