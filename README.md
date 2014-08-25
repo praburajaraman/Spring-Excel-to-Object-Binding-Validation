@@ -245,10 +245,13 @@ planning to do validation in POJO, this is when we have to use validator to vali
 This is my File :
 
 ID	Name	DOB
+
 1	Prabu	8/25/2014
+
 2	Ilan	8/25/2014
 
 And binded Object List:
+
 [User [id=1, name=Prabu, dob=Mon Aug 25 00:00:00 EDT 2014], User [id=2, name=Ilan, dob=Mon Aug 25 00:00:00 EDT 2014]]
 
 Want to contibute. write to me.
