@@ -2,6 +2,8 @@ package org.prabu.spring.excel.objectbinding.domain;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlRootElement;
+@XmlRootElement
 public class User extends Base{
 
 	
@@ -16,6 +18,10 @@ public class User extends Base{
 	
 	private Date dob;
 
+	public User() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public Long getId() {
 		return id;
 	}

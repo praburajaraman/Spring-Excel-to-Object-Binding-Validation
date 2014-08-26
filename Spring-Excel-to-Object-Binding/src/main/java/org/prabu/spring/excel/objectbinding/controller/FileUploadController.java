@@ -5,10 +5,14 @@ import java.util.List;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.prabu.spring.excel.objectbinding.domain.Base;
 import org.prabu.spring.excel.objectbinding.domain.User;
 import org.prabu.spring.excel.objectbinding.handler.FileUploadTemplateHandler;
 import org.prabu.spring.excel.objectbinding.utils.ExcelUtility;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +26,9 @@ public class FileUploadController {
 	
 	@Autowired
 	FileUploadTemplateHandler  fileUploadTemplateHandler;
+	
+	private final static Logger log = LoggerFactory
+			.getLogger(FileUploadController.class);
     
     public FileUploadTemplateHandler getFileUploadTemplateHandler() {
 		return fileUploadTemplateHandler;
@@ -38,25 +45,14 @@ public class FileUploadController {
     }
     
     @RequestMapping(value="/upload", method=RequestMethod.POST)
-    public @ResponseBody String handleFileUpload(@RequestParam("name") String name, 
+    public  @ResponseBody String handleFileUpload(@RequestParam("name") String name, 
             @RequestParam("file") MultipartFile file){
         if (!file.isEmpty()) {
             try {
-            	Workbook workbook;
-				List<User> userList;
-				if (file.getOriginalFilename().endsWith("xls")) {
-					workbook = new HSSFWorkbook(file.getInputStream());
-				} else if (file.getOriginalFilename().endsWith("xlsx")) {
-					workbook = new XSSFWorkbook(file.getInputStream());
-				} else {					
-					return " Uploading fail Invalid File!";
-				}
+            	List<Base> userList;
+            	userList = convertXl(file);
 				
-				userList = ExcelUtility.readXlFile(workbook, fileUploadTemplateHandler.getUserfileTemplate(), User.class);
-				
-                System.out.println(userList);
-				
-				return "You successfully uploaded " + name + " into " + name + "-uploaded !";
+				return "You successfully uploaded " + userList + " into " + name + "-uploaded !";
                 
             } catch (Exception e) {
                 return "You failed to upload " + name + " => " + e.getMessage();
@@ -64,6 +60,58 @@ public class FileUploadController {
         } else {
             return "You failed to upload " + name + " because the file was empty.";
         }
+    }
+    
+    @RequestMapping(value="/getJson", method=RequestMethod.POST,produces={MediaType.APPLICATION_JSON_VALUE})
+    public @ResponseBody <T extends Base > List<T> getJson(@RequestParam("name") String name, 
+            @RequestParam("file") MultipartFile file){
+    	try{
+    		return convertXl(file);	
+    	}catch(Exception e){
+    		log.info(e.getMessage());
+    		e.printStackTrace();
+    	}
+    	return null;
+    	
+    }
+    
+    @RequestMapping(value="/getXml", method=RequestMethod.POST,produces={MediaType.APPLICATION_JSON_VALUE})
+    public @ResponseBody <T extends Base > List<T> getXml(@RequestParam("name") String name, 
+            @RequestParam("file") MultipartFile file){
+    	try{
+    		return convertXl(file);	
+    	}catch(Exception e){
+    		log.info(e.getMessage());
+    		e.printStackTrace();
+    	}
+    	return null;
+    	
+    }
+    private <T extends Base> List<T> convertXl( MultipartFile file) throws Exception{
+    	List<T> list = null;
+    			  if (!file.isEmpty()) {
+    		            try {
+    		            	Workbook workbook;
+    						if (file.getOriginalFilename().endsWith("xls")) {
+    							workbook = new HSSFWorkbook(file.getInputStream());
+    						} else if (file.getOriginalFilename().endsWith("xlsx")) {
+    							workbook = new XSSFWorkbook(file.getInputStream());
+    						} else {					
+    							return list;
+    						}
+    						
+    						list = (List<T>)ExcelUtility.readXlFile(workbook, fileUploadTemplateHandler.getUserfileTemplate(), User.class);
+    						
+    		                System.out.println(list);
+    						
+    						return list;
+    		                
+    		            } catch (Exception e) {
+    		                throw new Exception(e.getMessage());
+    		            }
+    		        } else {
+    		        	 throw new Exception("You failed to upload   because the file was empty.");
+    		        }
     }
     
 }
