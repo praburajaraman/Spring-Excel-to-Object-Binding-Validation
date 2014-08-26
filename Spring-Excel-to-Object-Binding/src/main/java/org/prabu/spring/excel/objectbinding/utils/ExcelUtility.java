@@ -1,10 +1,6 @@
 package org.prabu.spring.excel.objectbinding.utils;
 
-import static org.prabu.spring.excel.objectbinding.common.ApplicationConstants.DECIMAL;
-import static org.prabu.spring.excel.objectbinding.common.ApplicationConstants.INVALID_DATE_VALUE;
-import static org.prabu.spring.excel.objectbinding.common.ApplicationConstants.INVALID_DECIMAL_VALUE;
-import static org.prabu.spring.excel.objectbinding.common.ApplicationConstants.INVALID_STRING_VALUE;
-import static org.prabu.spring.excel.objectbinding.common.ApplicationConstants.TIMESTAMP;
+import static org.prabu.spring.excel.objectbinding.common.ApplicationConstants.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -77,6 +73,13 @@ public class ExcelUtility {
 									getDecimalCellValue(row.getCell(pos),
 											bindException, column));
 							break;
+						case BOOLEAN:
+							BeanUtils.setProperty(
+									obj,
+									column.getBeanColumnName(),
+									getBooleanCellValue(row.getCell(pos),
+											bindException, column));
+							break;
 
 						default:
 							BeanUtils.setProperty(
@@ -127,7 +130,9 @@ public class ExcelUtility {
 
 			if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
 				rtrnVal = "" + cell.getNumericCellValue();
-			} else {
+			} else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
+				rtrnVal = cell.getCellFormula();
+			}else{
 				rtrnVal = cell.getStringCellValue();
 			}
 		} catch (Exception exception) {
@@ -163,4 +168,29 @@ public class ExcelUtility {
 
 		return rtrnVal;
 	}
+	
+	private static Boolean getBooleanCellValue(Cell cell, Errors errors,
+			ColumnTemplate columnTemplate) {
+		boolean rtrnVal = false;
+		if(cell==null){
+			return rtrnVal;
+		}
+		try {
+			if (cell != null) {
+				if (cell.toString().trim().length() == 0)
+					return rtrnVal;
+				else if (cell.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
+					rtrnVal = cell.getBooleanCellValue();
+					return rtrnVal;
+				}
+			}
+		} catch (IllegalStateException exception) {
+			log.error(exception.getMessage());
+			errors.rejectValue(columnTemplate.getBeanColumnName(),
+					INVALID_DECIMAL_VALUE, cell.toString());
+		}
+
+		return rtrnVal;
+	}
+	
 }
