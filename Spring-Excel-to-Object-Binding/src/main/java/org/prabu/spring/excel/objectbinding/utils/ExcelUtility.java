@@ -27,27 +27,32 @@ public class ExcelUtility {
 	private final static Logger log = LoggerFactory
 			.getLogger(ExcelUtility.class);
 
-	public static <T extends Base>  List<T> readXlFile(Workbook workbook,
+	public static <T extends Base>  List<T> readXlFile(Sheet sheet,
 			FileTemplate fileTemplate, Class<T> clazz){
-		return readXlFile(workbook, fileTemplate, clazz, true);
+		return readXlFile(sheet, fileTemplate, clazz, true,-1,-1);
 	}
-	public static <T extends Base>  List<T> readXlFile(Workbook workbook,
-			FileTemplate fileTemplate, Class<T> clazz, boolean hasHeaderRow) {
+	public static <T extends Base>  List<T> readXlFile(Sheet sheet,
+			FileTemplate fileTemplate, Class<T> clazz, boolean hasHeaderRow,int startRow, int endRow) {
 		List<T> objList = null;
 		BindException bindException;
 		T obj ;
 		ColumnTemplate column;
 
 		try {
-			Sheet sheet = workbook.getSheetAt(0);
-			Iterator<Row> rowIterator = sheet.iterator();
+			//Sheet sheet = workbook.getSheetAt(0);
+			if(startRow == -1 && endRow == -1){
+				startRow=sheet.getFirstRowNum();
+				endRow = sheet.getLastRowNum();
+			}
+			//Iterator<Row> rowIterator = sheet.iterator();
 
 			objList = new ArrayList<T>();
+			
+			for(int currRow = startRow; currRow <= endRow; currRow++){
 
-			while (rowIterator.hasNext()) {
 				obj = clazz.newInstance();
 				
-				Row row = (Row) rowIterator.next();
+				Row row = (Row) sheet.getRow(currRow);
 				bindException = new BindException(obj, ""+ row.getRowNum());
 
 				if (hasHeaderRow && row.getRowNum() < 1) {
