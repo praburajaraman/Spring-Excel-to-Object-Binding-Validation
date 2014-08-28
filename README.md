@@ -3,13 +3,24 @@ Spring-Excel-to-Object-Binding
 
 Spring Excel Upload File to Object Collection Binding
 
-This is something all programmers who wants to implement a solution of 
+This is something all programmers who wants to implement a solution of
+
 1. Uploading a file(Excel in here)
+
 2. Parsing file using Apache POI
+
 3. Binding excel rows in to colelction of POJO
+
 4. (Re)Using validator for POJO in dynamic binding (TBD)
 
-First thing this solution tried to do is have generic as much as possible and KISS. with just addition of your target POJO and file configuration this solution will be up and running - You have the List of objects with its data type errors and validation errors.
+First thing this solution tried to do is have generic as much as possible and KISS. with just addition of your target
+POJO and file configuration this solution will be up and running - 
+
+You have the List of objects with its data type errors and validation errors. 
+
+Also with Rest service features this project can server well as EXCEL to JSON or EXCEL to XML or whatever spring restservices supports in its @ResponseBody producing media types. 
+
+And other things I try to do here is have the File processed in parallel, kind of split the sheet in chunks and have concurrent threads process it for faster object binding.
 
 lets get Started:
 This Solution is built on Spring Framework. base of this is Spring getting started tutorial on file upload - http://spring.io/guides/gs/uploading-files/ read thru this on what basics of this.
