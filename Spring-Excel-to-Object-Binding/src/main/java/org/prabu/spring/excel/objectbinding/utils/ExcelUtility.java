@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 
 
 public class ExcelUtility {
@@ -29,10 +30,10 @@ public class ExcelUtility {
 
 	public static <T extends Base>  List<T> readXlFile(Sheet sheet,
 			FileTemplate fileTemplate, Class<T> clazz){
-		return readXlFile(sheet, fileTemplate, clazz, true,-1,-1);
+		return readXlFile(sheet, fileTemplate, clazz, true,-1,-1,null);
 	}
 	public static <T extends Base>  List<T> readXlFile(Sheet sheet,
-			FileTemplate fileTemplate, Class<T> clazz, boolean hasHeaderRow,int startRow, int endRow) {
+			FileTemplate fileTemplate, Class<T> clazz, boolean hasHeaderRow,int startRow, int endRow,Validator validator) {
 		List<T> objList = null;
 		BindException bindException;
 		T obj ;
@@ -96,8 +97,14 @@ public class ExcelUtility {
 						}
 					}
 				
+					obj.setRow(row.getRowNum()+1);
+					
+					if (validator!=null){
+						validator.validate(obj, bindException);
+					}
+					
 				obj.setErrors(bindException);
-				obj.setRow(row.getRowNum()+1);
+				
 				objList.add(obj);
 			}
 		} catch (Exception e) {

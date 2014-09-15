@@ -6,6 +6,7 @@ import java.util.TreeMap;
 
 import org.apache.poi.ss.usermodel.Sheet;
 import org.prabu.spring.excel.objectbinding.handler.FileTemplate;
+import org.springframework.validation.Validator;
 
 public class ExcelFile implements Serializable{
 
@@ -24,6 +25,16 @@ public class ExcelFile implements Serializable{
 	
 	Class<? extends Base> clazz;
 	
+	Validator validator;
+	
+	public Validator getValidator() {
+		return validator;
+	}
+
+	public void setValidator(Validator validator) {
+		this.validator = validator;
+	}
+
 	Map<Integer, Limit> sheetThreads;
 	
 	public Sheet getSheet() {
@@ -76,13 +87,16 @@ public class ExcelFile implements Serializable{
 	
 	
 	public ExcelFile(Sheet sheet, boolean hasHeader, int rowsPerThread,
-			FileTemplate fileTemplate, Class<? extends Base> clazz) {
+			FileTemplate fileTemplate, Class<? extends Base> clazz,
+			Validator validator
+			) {
 		super();
 		this.sheet = sheet;
 		this.hasHeader = hasHeader;
 		this.rowsPerThread = rowsPerThread;
 		this.fileTemplate = fileTemplate;
 		this.clazz = clazz;
+		this.validator = validator;
 		prepareThreads();
 	}
 

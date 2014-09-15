@@ -33,7 +33,7 @@ public class ExcelUtilityParallelReader implements  Callable<List<? extends Base
 		// TODO Auto-generated method stub
 		log.info("Running Thread for set starting : "+ limit.getStartRow());
 		return ExcelUtility.readXlFile(excelFile.getSheet(), excelFile.getFileTemplate(), excelFile.getClazz(), 
-				isHeaderThread, limit.getStartRow(), limit.getEndRow());
+				isHeaderThread, limit.getStartRow(), limit.getEndRow(),excelFile.getValidator());
 
 	}
 	

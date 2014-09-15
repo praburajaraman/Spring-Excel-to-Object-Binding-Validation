@@ -21,6 +21,19 @@ public class FileTemplate implements Serializable{
 	
 	private String dbTableName;
 	
+	/**
+	 * 
+	 */
+	private String validator;
+	
+	public String getValidator() {
+		return validator;
+	}
+
+	public void setValidator(String validator) {
+		this.validator = validator;
+	}
+
 	private List<ColumnTemplate> columnTemplates;
 	
 	private Map<Integer, ColumnTemplate> columnTemplatesMap;

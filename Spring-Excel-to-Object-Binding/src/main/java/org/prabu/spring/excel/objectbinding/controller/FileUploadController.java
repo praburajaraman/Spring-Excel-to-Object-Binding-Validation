@@ -13,6 +13,7 @@ import org.prabu.spring.excel.objectbinding.domain.User;
 import org.prabu.spring.excel.objectbinding.handler.FileUploadTemplateHandler;
 import org.prabu.spring.excel.objectbinding.utils.ExcelUtility;
 import org.prabu.spring.excel.objectbinding.utils.ExcelUtilityParallelProcessor;
+import org.prabu.spring.excel.objectbinding.validator.UserValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class FileUploadController {
 	
 	@Autowired
 	ExcelUtilityParallelProcessor excelUtilityParallelProcessor;
+	
+	@Autowired
+	UserValidator userValidator;
 	
 	private final static Logger log = LoggerFactory
 			.getLogger(FileUploadController.class);
@@ -113,7 +117,9 @@ public class FileUploadController {
     						}
     						
     						ExcelFile excelFile = new ExcelFile(workbook.getSheetAt(0), true, 2000,
-    								fileUploadTemplateHandler.getUserfileTemplate(), User.class);
+    								fileUploadTemplateHandler.getUserfileTemplate(), User.class,
+    								userValidator
+    								);
     						
     						
     						/*log.info("seq start time ~~~~~~~~~~~~~~~");
