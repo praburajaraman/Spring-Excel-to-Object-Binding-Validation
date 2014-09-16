@@ -26,6 +26,8 @@ public void validate(Object target, Errors errors) {
 	 // Name is Required value
 	 if(!StringUtils.hasText(user.getName())){
 			errors.rejectValue("name", "user.name.required","User Name is Required");
+			// to check multiple Errors for same field
+			errors.rejectValue("name", "user.name.required","User Name is Required1");
 		}
 	 
 }

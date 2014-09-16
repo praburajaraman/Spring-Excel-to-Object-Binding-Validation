@@ -60,17 +60,28 @@ public class ExcelUtility {
 					continue; // just skip the row if row number 0  if header row is true
 				}
 				
+				/*
+				 * Dynamically calculate positions based on Column Name 
+				 * and Bean Name if needed to not use static pos from conf
+				 * */
 
 					for (Integer pos : fileTemplate.getColumnTemplatesMap()
 							.keySet()) {
 						column = fileTemplate.getColumnTemplateByPos(pos);
 						switch (column.getType()) {
 						case TIMESTAMP:
+							try{
 							BeanUtils.setProperty(
 									obj,
 									column.getBeanColumnName(),
 									getDateCellValue(row.getCell(pos),
 											bindException, column));
+							}
+							catch (Exception e) {
+								// TODO: handle exception
+								e.printStackTrace();
+								
+							}
 							break;
 						case DECIMAL:
 							BeanUtils.setProperty(

@@ -3,7 +3,7 @@
   "templateName" :  "USER",
   "dbSchemaName" :  "",
   "dbTableName" :  "",
-  "validator" : "org.prabu.spring.excel.objectbinding.validator.UserValidator",
+  "validator" : "org.prabu.spring.excel.objectbinding.validator.UserValidator"
   "columnTemplates" :  [
                         {
                             "id": 1,

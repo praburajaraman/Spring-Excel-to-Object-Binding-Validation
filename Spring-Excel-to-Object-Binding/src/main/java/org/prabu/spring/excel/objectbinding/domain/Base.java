@@ -7,8 +7,11 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonRawValue;
 @XmlRootElement
 @XmlSeeAlso(User.class)
 public class Base implements Serializable{
@@ -43,6 +46,25 @@ public class Base implements Serializable{
 
 	public void setErrors(Errors errors) {
 		this.errors = errors;
+	}
+	
+	@JsonRawValue
+	public String getError(){
+		StringBuilder builder = new StringBuilder();
+		builder.append("[");
+		if(errors !=null && this.errors.hasErrors()){
+			
+			for(FieldError fieldError: errors.getFieldErrors() )
+			{
+				builder.append("{ \"column\" : \""+fieldError.getField()+"\",\"rejectedValue\""
+						+ ":\""+fieldError.getRejectedValue()+" / "+fieldError.getDefaultMessage());
+				builder.append("\",\"message\":\""+fieldError.getDefaultMessage()+" / Invalid Value "+"\"},");
+			}
+			builder.replace(builder.lastIndexOf(","), builder.length(), "");
+		}
+		builder.append("]");
+		
+		return builder.toString();
 	}
 
 }
