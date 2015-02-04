@@ -11,7 +11,9 @@ This is something all programmers who wants to implement a solution of
 
 3. Binding excel rows in to colelction of POJO
 
-4. (Re)Using validator for POJO in dynamic binding (TBD)
+4. (Re)Using validator for POJO in dynamic binding
+
+5. Have all this process run in Parallel for Chunks/blocks of data from Excel for high performance.  
 
 First thing this solution tried to do is have generic as much as possible and KISS. with just addition of your target
 POJO and file configuration this solution will be up and running - 
